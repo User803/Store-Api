@@ -22,6 +22,10 @@ public class UserService {
     }
 
     public void registerUser(User user) {
+       if (userRepository.findUserByEmail(user.getEmail()) != null) {
+           throw new RuntimeException("Email already exists");
+       }
+
         userRepository.save(user);
         log.info("User {} created successfully", user.getName());
         notificationService.sendNotification("Sent email to: " + user.getEmail());
