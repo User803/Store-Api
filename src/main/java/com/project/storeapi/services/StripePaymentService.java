@@ -16,12 +16,12 @@ public class StripePaymentService implements IPaymentService {
     @Value("${stripe.enabled}")
     private boolean enabled;
 
-    @Value("${stripe.timeout}")
+    // Default 3000 will be used if property has no value
+    @Value("${stripe.timeout:3000}")
     private int timeout;
 
     @Value("${stripe.supported-currencies}")
     private List<String> supportedCurrencies;
-
 
     @Override
     public void processPayment(double amount) {
