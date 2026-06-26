@@ -1,23 +1,34 @@
-package com.project.storeapi.model;
+package com.project.storeapi.entities;
 
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column( name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
 
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
+    @OneToMany(mappedBy = "user")
+    private List<Address> addresses = new ArrayList<>();
 
-    public User(Long id, String name, String email, String password) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
+    public void addAddress(Address address) {
+        addresses.add(address);
+        address.setUser(this);
     }
 
     public Long getId() {
@@ -59,6 +70,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", addresses=" + addresses +
                 '}';
     }
 }
