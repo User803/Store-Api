@@ -25,6 +25,11 @@ public class Profile {
     @Column(name = "loyalty_points")
     private Integer loyaltyPoints;
 
+    @OneToOne
+    @JoinColumn(name = "id") // Profile knows about the User but User isn't aware of Profile Table (Profile Table has foreign key). So Profile is the owner thus @JoinColumn
+    @MapsId // Tells Hibernate to use the same column as primary and foreign key of the entity
+    private User user;
+
     public Long getId() {
         return id;
     }
@@ -63,5 +68,25 @@ public class Profile {
 
     public void setLoyaltyPoints(Integer loyaltyPoints) {
         this.loyaltyPoints = loyaltyPoints;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id=" + id +
+                ", bio='" + bio + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", loyaltyPoints=" + loyaltyPoints +
+                ", user=" + user +
+                '}';
     }
 }

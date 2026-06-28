@@ -24,7 +24,7 @@ public class Address {
     private String zip;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id") // This is a column with values from another Table, so use JoinColumn instead of Column to specify with column it references
     private User user;
 
     public Long getId() {
@@ -74,6 +74,7 @@ public class Address {
     public void setUser(User user) {
         this.user = user;
     }
+
 
     @Override
     public String toString() {
