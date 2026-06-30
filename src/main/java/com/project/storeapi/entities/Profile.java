@@ -25,9 +25,9 @@ public class Profile {
     @Column(name = "loyalty_points")
     private Integer loyaltyPoints;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id") // Profile knows about the User but User isn't aware of Profile Table (Profile Table has foreign key). So Profile is the owner thus @JoinColumn
-    @MapsId // Tells Hibernate to use the same column as primary and foreign key of the entity
+    @MapsId // Tells Hibernate to use the same column as a primary and foreign key of the entity
     private User user;
 
     public Long getId() {

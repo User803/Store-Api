@@ -47,6 +47,14 @@ public class User {
     @OneToOne(mappedBy = "user") // Profile is the owner of the relationship. It has a reference column to User
     private Profile profile;
 
+    public User() { }
+
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
     public void addAddress(Address address) {
         addresses.add(address);
         address.setUser(this);
