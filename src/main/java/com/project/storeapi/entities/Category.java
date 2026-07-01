@@ -17,8 +17,24 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "categories")
+    @OneToMany(mappedBy = "categories", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Product> products = new HashSet<>();
+
+    public Category() { }
+
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public void addProducts(Product product) {
+        products.add(product);
+        product.setCategories(this);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
+        product.setCategories(null);
+    }
 
     public Byte getId() {
         return id;

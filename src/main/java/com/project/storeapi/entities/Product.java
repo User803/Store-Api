@@ -21,9 +21,16 @@ public class Product {
     @Column(name = "price")
     private BigDecimal price;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id") // Owner of the relationship because of foreign key column
     private Category categories;
+
+    public Product() { }
+
+    public Product(String name, BigDecimal price) {
+        this.name = name;
+        this.price = price;
+    }
 
     public Long getId() {
         return id;

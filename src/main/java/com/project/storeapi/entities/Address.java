@@ -23,9 +23,18 @@ public class Address {
     @Column(name = "zip")
     private String zip;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // This is a column with values from another Table, so use JoinColumn instead of Column to specify with column it references
     private User user;
+
+    public Address() { }
+
+    public Address(String street, String city, String state, String zip) {
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+    }
 
     public Long getId() {
         return id;

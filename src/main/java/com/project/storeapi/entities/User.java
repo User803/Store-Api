@@ -1,5 +1,6 @@
 package com.project.storeapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -23,9 +24,10 @@ public class User {
     private String email;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
-    @OneToMany(mappedBy = "user") // Address is the owner of this relationship because in the DB design Users Table has no column for Address but Addresses table has user_id column. Owner is the side with the foreign key
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // Address is the owner of this relationship because in the DB design Users Table has no column for Address but Addresses table has user_id column. Owner is the side with the foreign key
     private List<Address> addresses = new ArrayList<>();
 
     @ManyToMany
@@ -44,7 +46,7 @@ public class User {
     ) // No need to have user variable in Product class as it isn't required. No need to show user who else has this product in their wishlist
     private Set<Product> favoriteProducts = new HashSet<>();
 
-    @OneToOne(mappedBy = "user") // Profile is the owner of the relationship. It has a reference column to User
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true) // Profile is the owner of the relationship. It has a reference column to User
     private Profile profile;
 
     public User() { }
@@ -55,10 +57,15 @@ public class User {
         this.password = password;
     }
 
+    public void addFavoriteProduct(Product product) {
+        favoriteProducts.add(product);
+    }
+
     public void addAddress(Address address) {
         addresses.add(address);
         address.setUser(this);
     }
+
     public void removeAddress(Address address) {
         addresses.remove(address);
         address.setUser(null);
