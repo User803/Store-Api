@@ -22,9 +22,10 @@ public class StoreApiApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(StoreApiApplication.class, args);
-        UserService bean = context.getBean(UserService.class);
 
-        bean.findPaginatedProducts(0, 10);
+//        UserService bean = context.getBean(UserService.class);
+
+//        bean.findPaginatedProducts(0, 10);
 //        bean.findProductsBySpecification("product", BigDecimal.ONE, BigDecimal.valueOf(1000));
 
 //        User user = new User("Java",

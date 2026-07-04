@@ -30,13 +30,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // Address is the owner of this relationship because in the DB design Users Table has no column for Address but Addresses table has user_id column. Owner is the side with the foreign key
     private List<Address> addresses = new ArrayList<>();
 
-    @ManyToMany // OneToMany & ManyToMany relationships are Lazy loaded by default
-    @JoinTable(
-            name = "user_tags",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    ) // This is a Many-to-Many relationship so JoinTable(Has a separate table(user_tags) for this relationship) + JoinColumn, and User is the owner of the relationship
-    private Set<Tag> tags = new HashSet<>();
+//    @ManyToMany // OneToMany & ManyToMany relationships are Lazy loaded by default
+//    @JoinTable(
+//            name = "user_tags",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "tag_id")
+//    ) // This is a Many-to-Many relationship so JoinTable(Has a separate table(user_tags) for this relationship) + JoinColumn, and User is the owner of the relationship
+//    private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany // OneToMany & ManyToMany relationships are Lazy loaded by default
     @JoinTable(
@@ -73,18 +73,18 @@ public class User {
         address.setUser(null);
     }
 
-    public void addTag(String tagName) {
-        var tag = new Tag(tagName);
-        tags.add(tag);
-        tag.getUsers().add(this);
-    }
-
-    public void removeTag(String tagName) {
-        tags.stream()
-            .filter(tag -> tag.getName().equals(tagName))
-            .findFirst()
-            .ifPresent(tags::remove);
-    }
+//    public void addTag(String tagName) {
+//        var tag = new Tag(tagName);
+//        tags.add(tag);
+//        tag.getUsers().add(this);
+//    }
+//
+//    public void removeTag(String tagName) {
+//        tags.stream()
+//            .filter(tag -> tag.getName().equals(tagName))
+//            .findFirst()
+//            .ifPresent(tags::remove);
+//    }
 
     public Long getId() {
         return id;
@@ -124,14 +124,6 @@ public class User {
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
-    }
-
-    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
     }
 
     public Set<Product> getFavoriteProducts() {

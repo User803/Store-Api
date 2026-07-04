@@ -17,8 +17,8 @@ public class Tag {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "tags") // User is the owner of this relationship
-    private Set<User> users = new HashSet<>();
+//    @ManyToMany(mappedBy = "tags") // User is the owner of this relationship
+//    private Set<User> users = new HashSet<>();
 
     public Tag() { }
 
@@ -40,22 +40,5 @@ public class Tag {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    @Override
-    public String toString() {
-        return "Tag{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", users=" + users +
-                '}';
     }
 }
