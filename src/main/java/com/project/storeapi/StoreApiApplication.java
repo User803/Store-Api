@@ -24,8 +24,9 @@ public class StoreApiApplication {
         ConfigurableApplicationContext context = SpringApplication.run(StoreApiApplication.class, args);
         UserService bean = context.getBean(UserService.class);
 
-        bean.findLoyalProfiles();
-//
+        bean.findPaginatedProducts(0, 10);
+//        bean.findProductsBySpecification("product", BigDecimal.ONE, BigDecimal.valueOf(1000));
+
 //        User user = new User("Java",
 //                "java@email.com",
 //                "123");

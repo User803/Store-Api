@@ -63,4 +63,14 @@ public class Product {
     public void setCategories(Category categories) {
         this.categories = categories;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", categories=" + categories +
+                '}';
+    }
 }
