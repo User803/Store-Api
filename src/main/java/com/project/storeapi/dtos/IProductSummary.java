@@ -1,6 +1,6 @@
 package com.project.storeapi.dtos;
 
-public interface ProductSummary {
+public interface IProductSummary {
     Long getId();
     String getName();
 }

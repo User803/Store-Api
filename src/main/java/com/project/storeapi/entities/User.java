@@ -30,7 +30,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // Address is the owner of this relationship because in the DB design Users Table has no column for Address but Addresses table has user_id column. Owner is the side with the foreign key
     private List<Address> addresses = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany // OneToMany & ManyToMany relationships are Lazy loaded by default
     @JoinTable(
             name = "user_tags",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -38,7 +38,7 @@ public class User {
     ) // This is a Many-to-Many relationship so JoinTable(Has a separate table(user_tags) for this relationship) + JoinColumn, and User is the owner of the relationship
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany // OneToMany & ManyToMany relationships are Lazy loaded by default
     @JoinTable(
             name = "wishlist",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -46,7 +46,9 @@ public class User {
     ) // No need to have user variable in Product class as it isn't required. No need to show user who else has this product in their wishlist
     private Set<Product> favoriteProducts = new HashSet<>();
 
-    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true) // Profile is the owner of the relationship. It has a reference column to User
+    @OneToOne(mappedBy = "user",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true) // Profile is the owner of the relationship. It has a reference column to User
     private Profile profile;
 
     public User() { }
@@ -132,6 +134,14 @@ public class User {
         this.tags = tags;
     }
 
+    public Set<Product> getFavoriteProducts() {
+        return favoriteProducts;
+    }
+
+    public void setFavoriteProducts(Set<Product> favoriteProducts) {
+        this.favoriteProducts = favoriteProducts;
+    }
+
     public Profile getProfile() {
         return profile;
     }
@@ -146,8 +156,6 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", addresses=" + addresses +
                 '}';
     }
 }

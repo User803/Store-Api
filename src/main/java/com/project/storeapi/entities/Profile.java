@@ -25,6 +25,15 @@ public class Profile {
     @Column(name = "loyalty_points")
     private Integer loyaltyPoints;
 
+    public Profile() { }
+
+    public Profile(String bio, String phoneNumber, LocalDate dateOfBirth, Integer loyaltyPoints) {
+        this.bio = bio;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.loyaltyPoints = loyaltyPoints;
+    }
+
     // Even if fetch is set to lazy, it only affects Profile but User will still fetch profile eagerly
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id") // Profile knows about the User but User isn't aware of Profile Table (Profile Table has foreign key). So Profile is the owner thus @JoinColumn

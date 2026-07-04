@@ -1,11 +1,13 @@
 package com.project.storeapi.repositories;
 
+import com.project.storeapi.dtos.IProductSummary;
 import com.project.storeapi.dtos.ProductSummaryDto;
 import com.project.storeapi.entities.Category;
 import com.project.storeapi.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
@@ -20,6 +22,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p join p.categories where p.price between :min and :max order by p.name")
     List<Product> findByPriceBetweenOrderByName(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
 
+    // Stored Procedure
+    @Procedure("findProductsByPrice")
+    List<Product> findByProductsByPriceBetweenOrderByName(BigDecimal min, BigDecimal max);
+
     @Query("select count(*) from Product p where p.price between :min and :max")
     long countProducts(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
 
@@ -31,7 +37,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // Syntax when returning projection as interface
     @Query("select p.id, p.name from Product p where p.categories = :category")
-    List<ProductSummaryDto> findByCategoriesInterface(@Param("category") Category category);
+    List<IProductSummary> findByCategoriesInterface(@Param("category") Category category);
 
     // Syntax when returning projection as a class
     @Query("select new com.project.storeapi.dtos.ProductSummaryDto(p.id, p.name) from Product p where p.categories = :category")
