@@ -84,7 +84,6 @@ public class Address {
         this.user = user;
     }
 
-
     @Override
     public String toString() {
         return "Address{" +
@@ -93,7 +92,6 @@ public class Address {
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zip='" + zip + '\'' +
-                ", user=" + user +
                 '}';
     }
 }

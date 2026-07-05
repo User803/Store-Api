@@ -35,6 +35,11 @@ public class UserService {
 //        userRepository.save(user);
 //    }
 
+    public void findAllWithAddressesProjection() {
+        userRepository.findAllWithAddresses()
+                .forEach(System.out::println);
+    }
+
     public void findProducts() {
         var product = new Product();
         product.setName("product");

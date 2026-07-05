@@ -148,6 +148,8 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", addresses=" + addresses +
                 '}';
     }
 }

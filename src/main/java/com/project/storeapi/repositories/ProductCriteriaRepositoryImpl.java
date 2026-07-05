@@ -3,10 +3,7 @@ package com.project.storeapi.repositories;
 import com.project.storeapi.entities.Product;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -28,6 +25,9 @@ public class ProductCriteriaRepositoryImpl implements ProductCriteriaRepository 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Product> criteriaQuery = cb.createQuery(Product.class);
         Root<Product> root = criteriaQuery.from(Product.class);
+
+        // Avoids the N+1 SELECT problem
+        root.fetch("categories", JoinType.LEFT);
 
         List<Predicate> predicates = new ArrayList<>();
         if (name != null) {

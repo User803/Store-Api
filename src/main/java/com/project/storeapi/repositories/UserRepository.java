@@ -15,15 +15,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(attributePaths = {"tags", "addresses"})
     Optional<User> findByEmail(String email);
 
-    @EntityGraph(attributePaths = "addresses")
+    @EntityGraph(attributePaths = {"addresses", "profile"})
     @Query("select distinct u from User u")
     List<User> findAllWithAddresses();
 
     @Query("select u.id as id, u.email as email from User u where u.profile.loyaltyPoints > :loyaltyPoints order by u.email")
     List<IUserSummary> findLoyalUsersProjection(@Param("loyaltyPoints") int loyaltyPoints);
 
-
-//    @EntityGraph(attributePaths = "addresses")
-//    @Query("select u.id, u.name, u.email, u.addresses from User u")
-//    List<IUserSummary> findAllWithAddressesProjection();
+    @Query("""
+            select distinct u
+            from User u
+            left join fetch u.addresses
+            left join fetch u.profile
+    """)
+    List<User> findAllWithAddressesProjection();
 }
