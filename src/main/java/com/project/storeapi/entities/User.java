@@ -1,6 +1,7 @@
 package com.project.storeapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -28,7 +29,23 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // Address is the owner of this relationship because in the DB design Users Table has no column for Address but Addresses table has user_id column. Owner is the side with the foreign key
+    @JsonManagedReference
     private List<Address> addresses = new ArrayList<>();
+
+    @ManyToMany // OneToMany & ManyToMany relationships are Lazy loaded by default
+    @JoinTable(
+            name = "wishlist",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    ) // No need to have user variable in Product class as it isn't required. No need to show user who else has this product in their wishlist
+    @JsonIgnore
+    private Set<Product> favoriteProducts = new HashSet<>();
+
+    @OneToOne(mappedBy = "user",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true) // Profile is the owner of the relationship. It has a reference column to User
+    @JsonManagedReference("profile")
+    private Profile profile;
 
 //    @ManyToMany // OneToMany & ManyToMany relationships are Lazy loaded by default
 //    @JoinTable(
@@ -37,19 +54,6 @@ public class User {
 //            inverseJoinColumns = @JoinColumn(name = "tag_id")
 //    ) // This is a Many-to-Many relationship so JoinTable(Has a separate table(user_tags) for this relationship) + JoinColumn, and User is the owner of the relationship
 //    private Set<Tag> tags = new HashSet<>();
-
-    @ManyToMany // OneToMany & ManyToMany relationships are Lazy loaded by default
-    @JoinTable(
-            name = "wishlist",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    ) // No need to have user variable in Product class as it isn't required. No need to show user who else has this product in their wishlist
-    private Set<Product> favoriteProducts = new HashSet<>();
-
-    @OneToOne(mappedBy = "user",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true) // Profile is the owner of the relationship. It has a reference column to User
-    private Profile profile;
 
     public User() { }
 

@@ -1,5 +1,6 @@
 package com.project.storeapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -25,6 +26,7 @@ public class Address {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // This is a column with values from another Table, so use JoinColumn instead of Column to specify with column it references
+    @JsonBackReference
     private User user;
 
     public Address() { }
