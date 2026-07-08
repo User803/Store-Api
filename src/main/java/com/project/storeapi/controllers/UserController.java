@@ -1,34 +1,46 @@
 package com.project.storeapi.controllers;
 
+import com.project.storeapi.dtos.UserDto;
 import com.project.storeapi.entities.User;
+import com.project.storeapi.mappers.UserMapper;
 import com.project.storeapi.repositories.UserRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userRepository.findAllWithAddressesProjection());
+    public ResponseEntity<List<UserDto>> getAllUsers(
+            @RequestParam(required = false, defaultValue = "", name = "sort") String sort) {
+
+        // If no sort is passed, it defaults to name
+        if (!Set.of("name", "email").contains(sort)) {
+            sort = "name";
+        }
+
+        return ResponseEntity.ok(
+                userRepository.findAllWithAddressesProjection()
+                        .stream()
+                        .map(userMapper::toDto)
+                        .toList()
+        );
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         User user = userRepository.findById(id)
                 .orElse(null);
 
@@ -36,6 +48,6 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 }

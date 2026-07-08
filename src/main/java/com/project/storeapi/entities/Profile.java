@@ -26,6 +26,13 @@ public class Profile {
     @Column(name = "loyalty_points")
     private Integer loyaltyPoints;
 
+    // Even if fetch is set to lazy, it only affects Profile but User will still fetch profile eagerly
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id") // Profile knows about the User but User isn't aware of Profile Table (Profile Table has foreign key). So Profile is the owner thus @JoinColumn
+    @MapsId // Tells Hibernate to use the same column as a primary and foreign key of the entity
+    @JsonBackReference("profile")
+    private User user;
+
     public Profile() { }
 
     public Profile(String bio, String phoneNumber, LocalDate dateOfBirth, Integer loyaltyPoints) {
@@ -34,13 +41,6 @@ public class Profile {
         this.dateOfBirth = dateOfBirth;
         this.loyaltyPoints = loyaltyPoints;
     }
-
-    // Even if fetch is set to lazy, it only affects Profile but User will still fetch profile eagerly
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id") // Profile knows about the User but User isn't aware of Profile Table (Profile Table has foreign key). So Profile is the owner thus @JoinColumn
-    @MapsId // Tells Hibernate to use the same column as a primary and foreign key of the entity
-    @JsonBackReference("profile")
-    private User user;
 
     public Long getId() {
         return id;

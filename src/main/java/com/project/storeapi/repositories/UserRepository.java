@@ -2,6 +2,7 @@ package com.project.storeapi.repositories;
 
 import com.project.storeapi.dtos.IUserSummary;
 import com.project.storeapi.entities.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

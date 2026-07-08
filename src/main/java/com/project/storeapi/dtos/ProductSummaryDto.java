@@ -1,4 +1,8 @@
 package com.project.storeapi.dtos;
 
-public record ProductSummaryDto(Long id, String name) {
+import java.math.BigDecimal;
+
+public record ProductSummaryDto(
+        Long id,
+        String name) {
 }

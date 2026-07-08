@@ -2,4 +2,13 @@
 GET http://localhost:8080/users
 
 ### GET user by ID
-GET http://localhost:8080/users/13
+GET http://localhost:8080/users/18
+
+### GET All Products
+GET http://localhost:8080/products
+
+### GET Products by category
+GET http://localhost:8080/products?categoryId=5
+
+### GET Product by ID
+GET http://localhost:8080/products/17
