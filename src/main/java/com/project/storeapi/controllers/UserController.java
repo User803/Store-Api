@@ -1,5 +1,6 @@
 package com.project.storeapi.controllers;
 
+import com.project.storeapi.dtos.ChangePasswordRequest;
 import com.project.storeapi.dtos.RegisterUserRequest;
 import com.project.storeapi.dtos.UpdateUserRequest;
 import com.project.storeapi.dtos.UserDto;
@@ -83,6 +84,39 @@ public class UserController {
         userRepository.save(user);
 
         return ResponseEntity.ok(userMapper.toDto(user));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        var user = userRepository.findById(id).orElse(null);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        userRepository.delete(user);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/change-password")
+    public ResponseEntity<Void> changePassword(
+            @PathVariable Long id,
+            @RequestBody ChangePasswordRequest request) {
+
+        var user = userRepository.findById(id).orElse(null);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!user.getPassword().equals(request.oldPassword())) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        user.setPassword(request.newPassword());
+        userRepository.save(user);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

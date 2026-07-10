@@ -28,8 +28,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     @Query("select new com.project.storeapi.dtos.ProductDto(p.id, p.name, p.price, p.categories.id) from Product p")
     List<ProductDto> findAllProductsDto();
 
-    @Query("select new com.project.storeapi.dtos.ProductDto(p.id, p.name, p.price, p.categories.id) from Product p where p.id= :id")
-    Optional<ProductDto> findProductById(@Param("id") Long id);
 
     @EntityGraph(attributePaths = "categories")
     Page<Product> findAll(Pageable pageable);
@@ -57,6 +55,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     // Syntax when returning projection as a class
     @Query("select new com.project.storeapi.dtos.ProductDto(p.id, p.name, p.price, p.categories.id) from Product p where p.categories.id = :categoryId")
     List<ProductDto> findByCategoriesClassDto(@Param("categoryId") Byte categoryId);
+
+    @Query("select new com.project.storeapi.dtos.ProductDto(p.id, p.name, p.price, p.categories.id) from Product p where p.id= :id")
+    Optional<ProductDto> findProductById(Long id);
 
     // Syntax when returning projection as a class
     @Query("select new com.project.storeapi.dtos.ProductSummaryDto(p.id, p.name) from Product p where p.categories = :category")
