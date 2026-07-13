@@ -30,4 +30,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             left join fetch u.profile
     """)
     List<User> findAllWithAddressesProjection();
+
+    boolean existsByEmail(String email);
 }
