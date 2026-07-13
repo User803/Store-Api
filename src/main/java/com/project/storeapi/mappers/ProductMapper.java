@@ -2,9 +2,7 @@ package com.project.storeapi.mappers;
 
 import com.project.storeapi.dtos.ProductDto;
 import com.project.storeapi.dtos.UpdateProductRequest;
-import com.project.storeapi.dtos.UpdateUserRequest;
 import com.project.storeapi.entities.Product;
-import com.project.storeapi.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

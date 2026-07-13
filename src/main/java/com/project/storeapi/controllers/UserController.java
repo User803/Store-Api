@@ -7,6 +7,7 @@ import com.project.storeapi.dtos.UserDto;
 import com.project.storeapi.entities.User;
 import com.project.storeapi.mappers.UserMapper;
 import com.project.storeapi.repositories.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +59,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(
-            @RequestBody RegisterUserRequest request,
+            @Valid @RequestBody RegisterUserRequest request,
             UriComponentsBuilder uriBuilder) {
 
         var user = userMapper.toEntity(request);
@@ -118,5 +119,4 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
-
 }
